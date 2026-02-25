@@ -42,8 +42,8 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${phazarika.ph@gmail.com}
+          password: ${Prince@2596}
 
       - name: Build Docker image
         run: docker build -t princehazarika01/api-inventory:latest .
