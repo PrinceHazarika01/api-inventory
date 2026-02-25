@@ -6,6 +6,7 @@ on:
       - main
 
 jobs:
+  # Job 1: Build and test
   build-and-test:
     runs-on: ubuntu-latest
     steps:
@@ -32,32 +33,36 @@ jobs:
       - name: Run Tests
         run: mvn test
 
-      # Upload as GitHub Actions artifact
+      # Upload the JAR as an artifact
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v3
         with:
           name: my-app-jar
           path: target/*.jar
 
-      # OPTIONAL: Commit JAR back to repo under target/
-      - name: Commit JAR to repo
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add target/*.jar
-          git commit -m "Add latest JAR [skip ci]" || echo "No changes to commit"
-          git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  docker-build:
+  # Job 2: Download the built JAR
+  download-jar:
     needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: my-app-jar
+          path: target
+
+      - name: List downloaded files
+        run: ls -la target
+
+  # Job 3: Docker build and push
+  docker-build:
+    needs: download-jar
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Download the JAR artifact built in job-1
+      # Download JAR again if needed
       - name: Download JAR artifact
         uses: actions/download-artifact@v3
         with:
