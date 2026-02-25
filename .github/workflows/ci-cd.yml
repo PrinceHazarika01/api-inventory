@@ -6,7 +6,6 @@ on:
       - main
 
 jobs:
-  # Job 1: Build and test
   build-and-test:
     runs-on: ubuntu-latest
     steps:
@@ -33,41 +32,12 @@ jobs:
       - name: Run Tests
         run: mvn test
 
-      # Upload the JAR as an artifact
-      - name: Upload JAR artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: my-app-jar
-          path: target/*.jar
-
-  # Job 2: Download the built JAR
-  download-jar:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download JAR artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: my-app-jar
-          path: target
-
-      - name: List downloaded files
-        run: ls -la target
-
-  # Job 3: Docker build and push
   docker-build:
-    needs: download-jar
+    needs: build-and-test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      # Download JAR again if needed
-      - name: Download JAR artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: my-app-jar
-          path: target
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
