@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class InventoryServiceImpl implements InventoryService {
@@ -19,8 +21,7 @@ public class InventoryServiceImpl implements InventoryService {
     private final InventoryRepository repository;
 
     @Override
-    public Page<InventoryResponse> search(InventorySearchRequest request,
-                                          Pageable pageable) {
+    public List<InventoryResponse> search(InventorySearchRequest request) {
 
         var spec = InventorySpecification.build(
                 request.getName(),
@@ -30,8 +31,10 @@ public class InventoryServiceImpl implements InventoryService {
                 request.getSeller()
         );
 
-        Page<Inventory> page = repository.findAll(spec, pageable);
+        List<Inventory> inventories = repository.findAll(spec);
 
-        return page.map(InventoryMapper::toResponse);
+        return inventories.stream()
+                .map(InventoryMapper::toResponse)
+                .toList();
     }
 }

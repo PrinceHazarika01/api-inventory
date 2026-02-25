@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/inventories")
 @RequiredArgsConstructor
@@ -17,14 +19,13 @@ public class InventoryController {
     private final InventoryService service;
 
     @GetMapping("/search")
-    public ApiResponse<Page<InventoryResponse>> search(
-            InventorySearchRequest request,
-            @PageableDefault(size = 10) org.springframework.data.domain.Pageable pageable
+    public ApiResponse<List<InventoryResponse>> search(
+            InventorySearchRequest request
     ) {
 
-        Page<InventoryResponse> result = service.search(request, pageable);
+        List<InventoryResponse> result = service.search(request);
 
-        return ApiResponse.<Page<InventoryResponse>>builder()
+        return ApiResponse.<List<InventoryResponse>>builder()
                 .message("Inventories fetched successfully")
                 .data(result)
                 .build();
