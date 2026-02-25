@@ -31,6 +31,12 @@ jobs:
 
       - name: Run Tests
         run: mvn test
+        
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-app-jar
+          path: target/*.jar
 
   docker-build:
     needs: build-and-test
