@@ -42,7 +42,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${phazarika.ph@gmail.com}
+          username: ${princeph}
           password: ${Prince@2596}
 
       - name: Build Docker image
