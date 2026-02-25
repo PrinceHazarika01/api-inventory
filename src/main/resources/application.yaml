@@ -1,7 +1,7 @@
 spring:
   application:
     name: inventory
-    
+
   datasource:
     url: jdbc:h2:mem:inventorydb
     driver-class-name: org.h2.Driver
@@ -14,6 +14,7 @@ spring:
       path: /h2-console
 
   jpa:
+    defer-datasource-initialization: true
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
@@ -21,3 +22,5 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+# http://localhost:8080/h2-console

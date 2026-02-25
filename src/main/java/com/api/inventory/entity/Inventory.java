@@ -50,11 +50,13 @@ public class Inventory {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    // Triggered before INSERT happens in database.
     @PrePersist
     public void prePersist() {
         createdAt = LocalDateTime.now();
     }
 
+    // Triggered before UPDATE happens in database.
     @PreUpdate
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
